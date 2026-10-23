@@ -47,12 +47,7 @@ body.theme-luka .publications ol.bibliography li { padding: 3px 0 3px 18px; }
 body.theme-luka .pub-content .title { margin: 0 0 9px; font-size: 16px; font-weight: 650; line-height: 1.6; }
 body.theme-luka .pub-content .author { margin: 0 0 6px; font-size: 13px; }
 body.theme-luka .pub-content .periodical { margin: 0; color: var(--luka-secondary); font-size: 12px; }
-.institution-mark { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; flex-shrink: 0; border: 1px solid var(--luka-border); border-radius: 9px; font-size: 11px; font-weight: 700; letter-spacing: .5px; }
-.xiamen { color: #3c6792; background: rgba(60,103,146,.06); }
-.stony-brook { color: #a84840; background: rgba(168,72,64,.06); }
-[data-theme="dark"] .xiamen { color: #9dbce0; }
-[data-theme="dark"] .stony-brook { color: #eea49c; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .xiamen { color: #9dbce0; } :root:not([data-theme="light"]) .stony-brook { color: #eea49c; } }
+body.theme-luka .institution-logo { display: block; width: 64px; height: 64px; flex-shrink: 0; object-fit: contain; background: #fff; padding: 5px; border-radius: 8px; }
 body.theme-luka .exp-title { font-size: 15px; margin: 0 0 3px; line-height: 1.6; font-weight: 650; }
 body.theme-luka .exp-detail { font-size: 12px; line-height: 1.75; }
 body.theme-luka .exp-role { margin: 6px 0 3px; font-size: 13px; font-weight: 500; }
@@ -66,6 +61,7 @@ body.theme-luka .timeline-item:last-child { padding-bottom: 0; }
 .project-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 7px; }
 .project-index { color: var(--luka-accent); font-size: 12px; font-weight: 600; }
 .project-status { font-size: 11px; color: var(--luka-secondary); }
+.project-status.under-review { color: var(--luka-accent); }
 .research-project h3 { font-size: 15px; line-height: 1.65; margin: 0 0 8px; font-weight: 650; }
 .research-project p { font-size: 13px; margin: 0 0 8px; line-height: 1.8; }
 .research-project .project-contribution { color: var(--luka-secondary); font-size: 12px; }
@@ -97,7 +93,7 @@ body.theme-luka .template-credit { font-size: 10px; }
   .news-list li { grid-template-columns: 64px minmax(0,1fr); gap: 11px; font-size: 12px; }
   .news-list time { font-size: 10px; }
   .research-interests span { font-size: 10px; }
-  .institution-mark { width: 40px; height: 40px; font-size: 9px; }
+  body.theme-luka .institution-logo { width: 48px; height: 48px; padding: 3px; }
   body.theme-luka .experience-item { gap: 11px; }
   body.theme-luka .timeline-item { margin-left: 10px; padding-left: 7px; }
   body.theme-luka .timeline-item::before { left: -10px; }

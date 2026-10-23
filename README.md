@@ -12,6 +12,7 @@ Personal academic website of Xiang Liu (刘祥), an undergraduate researcher at 
 - `assets/js/homepage.js`: accessible theme toggle with persistent preference.
 - `assets/img/xiang-liu.jpg`: profile avatar.
 - `assets/img/favicon.svg`: site icon.
+- `assets/img/xiamen-university.svg` and `assets/img/stony-brook-university.png`: university marks; see [asset sources](ASSET_SOURCES.md).
 
 The site uses static HTML, CSS, and JavaScript with no build step, analytics, or remote font/icon dependencies. Missing paper, code, and CV links are intentionally omitted; add actual links when available.
 
