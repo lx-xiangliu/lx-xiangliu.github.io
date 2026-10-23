@@ -1,9 +1,7 @@
 .DS_Store
 Thumbs.db
-
-# Local editor files
 .idea/
 .vscode/
-
-# macOS metadata
 ._*
+node_modules/
+.qa/
