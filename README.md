@@ -14,7 +14,15 @@ Personal academic website of Xiang Liu (刘祥), an undergraduate researcher at 
 - `assets/img/favicon.svg`: site icon.
 - `assets/img/xiamen-university.svg` and `assets/img/stony-brook-university.png`: university marks; see [asset sources](ASSET_SOURCES.md).
 
-The site uses static HTML, CSS, and JavaScript with no build step, analytics, or remote font/icon dependencies. Missing paper, code, and CV links are intentionally omitted; add actual links when available.
+The site uses static HTML, CSS, and JavaScript with no build step or remote font/icon dependencies. Missing paper, code, and CV links are intentionally omitted; add actual links when available.
+
+## Visitor counter and world map
+
+The public visitor section uses an aggregate counter at `https://xiang-liu-visitor-map.smartowl258.chatgpt.site`. Its application does not read or store IP addresses, city locations, or GPS data, and performs no IP geolocation lookup. Only the total count is public. A random event receipt prevents duplicate requests for 24 hours; browser session storage limits counting to once per tab per 30 minutes. Do Not Track and Global Privacy Control suppress counting. The hosting providers may still process ordinary connection logs. Visits before the feature was enabled are unavailable.
+
+The map uses TianDiTu's original vector basemap, boundaries, and attribution. Because its legacy English annotation service is unavailable, local English country and ocean names are overlaid using Leaflet. These are general geographic labels, not visitor locations; the map contains no visitor markers. Labels prioritize larger countries and avoid overlap as the map moves or zooms. It does not include street or city labels.
+
+`assets/js/visitor-config.js` contains the public browser map key, intended to be restricted to this GitHub Pages domain in the provider console. It contains no server credential. Local previews never submit visits. Leaflet is vendored locally; see its bundled license and [asset sources](ASSET_SOURCES.md).
 
 ## Local preview
 

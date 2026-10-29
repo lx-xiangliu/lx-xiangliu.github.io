@@ -18,3 +18,9 @@ Retrieved on October 23, 2026. Assets are stored locally so the page does not de
 - The complete shield-and-wordmark logo is retained with its original colors and proportions.
 
 These marks identify academic affiliations on a personal homepage and are not covered by the template's MIT software license.
+
+## World map
+
+- Basemap: [TianDiTu](https://www.tianditu.gov.cn/), served directly over HTTPS with the original boundaries and approval/copyright attribution retained.
+- Country and ocean labels: local English text at representative geographic positions; no third-party geolocation service or visitor coordinates are used.
+- Renderer: [Leaflet 1.9.4](https://leafletjs.com/download.html), distributed via the official npm `leaflet` package. Files in `assets/vendor/leaflet/` retain the BSD 2-Clause license in `LICENSE`.

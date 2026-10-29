@@ -22,7 +22,11 @@
   </script>
   <link rel="stylesheet" href="assets/css/theme-luka.css">
   <link rel="stylesheet" href="assets/css/personal.css?v=20261023-3">
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="assets/css/visitors.css?v=20261029-4">
   <script src="assets/js/homepage.js" defer></script>
+  <script src="assets/js/visitor-config.js?v=20261029-1" defer></script>
+  <script src="assets/js/visitors.js?v=20261029-4" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -71,6 +75,7 @@
           <a href="https://www.linkedin.com/in/xiang-liu-461807322" title="LinkedIn" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.2 8.6H2V22h3.2V8.6ZM3.6 2a1.9 1.9 0 1 0 0 3.8 1.9 1.9 0 0 0 0-3.8ZM22 14.3c0-4-2.1-5.9-4.9-5.9-2.2 0-3.2 1.2-3.7 2V8.6h-3.2V22h3.2v-7.5c0-2 .4-3.8 2.8-3.8s2.6 2.1 2.6 3.9V22H22v-7.7Z"/></svg></a>
         </div>
         <p class="profile-note">Medical AI · Representation Learning<br>Clinical Reasoning</p>
+        <div class="visitor-shortcut"><a href="#visitors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18M5 6.5h14M5 17.5h14"/></svg><span>Visitor map</span><span id="visitor-shortcut-count">Loading…</span></a></div>
       </div>
     </aside>
 
@@ -176,6 +181,16 @@
           <p>Exploring scalable foundation model architectures for learning representations from functional MRI time-series data.</p>
           <p class="project-contribution"><strong>Current focus.</strong> fMRI data structures and preprocessing, large-scale neuroimaging representation learning, Transformer-based temporal models, cross-subject generalization, and downstream evaluation.</p>
         </article>
+      </section>
+      <section class="section" id="visitors" aria-labelledby="visitors-title">
+        <h2 class="section-title" id="visitors-title">Visitors &amp; World Map</h2>
+        <p class="visitor-intro">Thank you for stopping by. This counter records visits; location tracking is disabled.</p>
+        <dl class="visitor-totals"><div><dt>Visits</dt><dd id="visitor-total">—</dd></div></dl>
+        <div id="visitor-map" class="visitor-map" role="region" aria-label="World map with English country labels on a TianDiTu basemap"><p>Loading world map…</p></div>
+        <p class="visitor-map-status" id="visitor-map-status">World basemap provided by TianDiTu (天地图).</p>
+        <p class="visitor-status" id="visitor-status" role="status">Loading visitor statistics…</p>
+        <details class="visitor-privacy"><summary>About these statistics</summary><p>Only an aggregate visit count is collected. Location tracking and IP lookup are disabled. The application does not read or store visitor IP addresses, cities, or GPS locations. A visit is counted at most once per browser tab every 30 minutes; this is not a count of unique people. Do Not Track and Global Privacy Control are respected. Counting starts when this feature goes live; earlier visits cannot be recovered.</p></details>
+        <noscript><p>JavaScript is required to load the visitor map and statistics.</p></noscript>
       </section>
     </main>
 

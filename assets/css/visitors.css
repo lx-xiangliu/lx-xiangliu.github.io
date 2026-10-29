@@ -26,3 +26,6 @@ body.theme-luka .visitor-map a { color: #31516d; }
 
 .visitor-map .leaflet-popup-content, body.theme-luka .visitor-map .leaflet-popup-content strong { color: #26323b; }
 .visitor-map .leaflet-control-attribution { font-size: 9px; }
+.map-english-label { background: none; border: 0; text-align: center; pointer-events: none; white-space: nowrap; }
+.map-english-label span { display: block; color: #3d4854; font: 600 11px/20px Arial, sans-serif; text-shadow: 0 0 3px #fff, 0 0 3px #fff, 0 1px 2px #fff; }
+.map-english-label .map-label-ocean { color: #4d7195; font-style: italic; font-weight: 400; }
