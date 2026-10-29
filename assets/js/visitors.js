@@ -103,7 +103,24 @@
     if (!event || Date.now() - event.at >= 30 * 60 * 1000) event = { eventId:crypto.randomUUID(), at:Date.now(), complete:false };
     if (event.complete) return;
     try { sessionStorage.setItem(storageKey, JSON.stringify(event)); } catch (_) {}
-    await request('/api/collect', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({eventId:event.eventId}), keepalive:true });
+    // Direct lookup uses the browser's actual network address, avoiding hosting
+    // proxy addresses. Only the approximate city result is sent to our counter.
+    let place;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 5000);
+    try {
+      const result = await fetch('https://ipwho.is/?fields=success,country_code,city,latitude,longitude', {
+        mode:'cors',credentials:'omit',referrerPolicy:'no-referrer',redirect:'error',signal:controller.signal
+      });
+      if (result.ok) {
+        const data = await result.json();
+        if (data.success === true && /^[A-Z]{2}$/.test(data.country_code) && typeof data.city === 'string' && data.city.trim() &&
+          Number.isFinite(data.latitude) && Math.abs(data.latitude)<=90 && Number.isFinite(data.longitude) && Math.abs(data.longitude)<=180) {
+          place = {country:data.country_code,city:data.city.trim().slice(0,80),latitude:Math.round(data.latitude*10)/10,longitude:Math.round(data.longitude*10)/10};
+        }
+      }
+    } catch (_) {} finally { clearTimeout(timeout); }
+    await request('/api/collect', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({eventId:event.eventId,location:place}), keepalive:true });
     event.complete = true;
     try { sessionStorage.setItem(storageKey, JSON.stringify(event)); } catch (_) {}
   }
