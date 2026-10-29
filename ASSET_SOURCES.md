@@ -1,4 +1,4 @@
-# University mark sources
+# Asset sources
 
 Retrieved on October 23, 2026. Assets are stored locally so the page does not depend on third-party image hosts.
 
@@ -18,6 +18,13 @@ Retrieved on October 23, 2026. Assets are stored locally so the page does not de
 - The complete shield-and-wordmark logo is retained with its original colors and proportions.
 
 These marks identify academic affiliations on a personal homepage and are not covered by the template's MIT software license.
+
+## NeurIPS
+
+- File: `assets/img/neurips-logo.svg` (original SVG, unmodified; retains original colors and proportions).
+- Source: [NeurIPS official website](https://neurips.cc/), where the footer supplies this vector graphic for download and use at any scale.
+- Original file: https://neurips.cc/static/core/img/NeurIPS-logo.svg
+- Retrieved October 29, 2026. The mark identifies the publication venue and is not covered by the template's software license.
 
 ## World map
 

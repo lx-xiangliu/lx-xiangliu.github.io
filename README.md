@@ -12,9 +12,12 @@ Personal academic website of Xiang Liu (刘祥), an undergraduate researcher at 
 - `assets/js/homepage.js`: accessible theme toggle with persistent preference.
 - `assets/img/xiang-liu.jpg`: profile avatar.
 - `assets/img/favicon.svg`: site icon.
+- `assets/img/neurips-logo.svg`: original official NeurIPS vector logo for the publication venue.
 - `assets/img/xiamen-university.svg` and `assets/img/stony-brook-university.png`: university marks; see [asset sources](ASSET_SOURCES.md).
 
 The site uses static HTML, CSS, and JavaScript with no build step or remote font/icon dependencies. Missing paper, code, and CV links are intentionally omitted; add actual links when available.
+
+The sidebar email uses `[at]` in visible text. Its address is encoded in JavaScript and decoded only on a click; no plain email or `mailto:` is present in the initial HTML/structured data. This reduces basic email harvesting, but cannot prevent a crawler that understands the obfuscation or performs clicks.
 
 ## Visitor counter and world map
 
