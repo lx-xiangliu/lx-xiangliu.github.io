@@ -7,13 +7,14 @@
   const mapStatus = document.getElementById('visitor-map-status');
   const shortcut = document.getElementById('visitor-shortcut-count');
   const number = new Intl.NumberFormat('en');
+  const visitLabel = count => `${number.format(count)} ${Number(count)===1?'visit':'visits'}`;
   let mapPromise, visitorMap, visitorMarkers;
   let locations = [];
   const regions = new Intl.DisplayNames(['en'], {type:'region'});
   function locationName(place) {
     let country = place.country;
     try { country = regions.of(place.country); } catch (_) {}
-    return [place.city, country].filter(Boolean).join(', ');
+    return place.city === country ? place.city : [place.city, country].filter(Boolean).join(', ');
   }
   function drawVisitorMarkers() {
     if (!visitorMap) return;
@@ -24,7 +25,7 @@
       const popup = document.createElement('div');
       const title = document.createElement('strong');
       title.textContent = locationName(place);
-      popup.append(title, document.createElement('br'), `${number.format(place.visits)} visits · Approximate city location`);
+      popup.append(title, document.createElement('br'), `${visitLabel(place.visits)} · Approximate city location`);
       L.circleMarker([place.latitude,longitude], {radius:Math.min(15,5+Math.log2(1+place.visits)*2),color:'#8b4d2c',weight:1.5,fillColor:'#c47e51',fillOpacity:0.65})
         .bindPopup(popup).addTo(visitorMarkers);
     }
@@ -129,13 +130,13 @@
       const data = await (await request('/api/stats')).json();
       if (!Number.isFinite(Number(data.visits))) throw new Error('Invalid response');
       document.getElementById('visitor-total').textContent = number.format(data.visits);
-      shortcut.textContent = `${number.format(data.visits)} visits`;
+      shortcut.textContent = visitLabel(data.visits);
       locations = Array.isArray(data.locations) ? data.locations.filter(p =>
         typeof p.city === 'string' && /^[A-Z]{2}$/.test(p.country) &&
         Number.isFinite(p.latitude) && Math.abs(p.latitude)<=90 &&
         Number.isFinite(p.longitude) && Math.abs(p.longitude)<=180 && p.visits>0) : [];
       status.textContent = data.geolocation
-        ? `${number.format(data.locatedVisits || 0)} visits mapped to approximate cities · ${number.format(data.unlocatedVisits || 0)} without a known location.`
+        ? `${visitLabel(data.locatedVisits || 0)} mapped to approximate cities · ${number.format(data.unlocatedVisits || 0)} without a known location.`
         : 'Aggregate visit count · Location tracking is disabled.';
       const citySummary = document.getElementById('visitor-city-summary');
       if (citySummary) {
