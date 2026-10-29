@@ -7,12 +7,7 @@
   const mapStatus = document.getElementById('visitor-map-status');
   const shortcut = document.getElementById('visitor-shortcut-count');
   const number = new Intl.NumberFormat('en');
-  let locations = [], map, markers = [], mapPromise;
-  const regions = typeof Intl.DisplayNames === 'function' ? new Intl.DisplayNames(['en'], { type: 'region' }) : null;
-  const placeName = item => {
-    const country = item.country === 'ZZ' ? 'Location unavailable' : (regions?.of(item.country) || item.country);
-    return item.city && item.city !== 'Unknown city' ? `${item.city} · ${country}` : country;
-  };
+  let mapPromise;
   async function request(path, options = {}) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12000);
@@ -35,68 +30,39 @@
     event.complete = true;
     try { sessionStorage.setItem(storageKey, JSON.stringify(event)); } catch (_) {}
   }
-  function drawLocations() {
-    if (!map || !window.T) return;
-    markers.forEach(marker => map.removeOverLay(marker)); markers = [];
-    for (const item of locations) {
-      const point = new T.LngLat(item.longitude, item.latitude);
-      const marker = new T.Marker(point);
-      marker.addEventListener('click', () => {
-        const content = document.createElement('div');
-        const heading = document.createElement('strong'); heading.textContent = placeName(item);
-        const count = document.createElement('p'); count.textContent = `${number.format(item.visits)} visits · approximate network location`;
-        content.append(heading, count);
-        marker.openInfoWindow(new T.InfoWindow(content.outerHTML));
-      });
-      map.addOverLay(marker);
-      marker.getElement?.()?.setAttribute('title', `${placeName(item)}: ${number.format(item.visits)} visits`);
-      markers.push(marker);
-    }
-  }
   async function loadStatistics() {
     try {
       const data = await (await request('/api/stats')).json();
-      if (!Array.isArray(data.locations) || !Number.isFinite(Number(data.visits))) throw new Error('Invalid response');
-      locations = data.locations.filter(item => Number.isFinite(item.latitude) && Number.isFinite(item.longitude) && Number(item.visits) > 0);
+      if (!Number.isFinite(Number(data.visits))) throw new Error('Invalid response');
       document.getElementById('visitor-total').textContent = number.format(data.visits);
-      document.getElementById('visitor-location-total').textContent = number.format(locations.length);
       shortcut.textContent = `${number.format(data.visits)} visits`;
-      const unknown = Number(data.unmappedVisits || 0);
-      status.textContent = data.visits === 0 ? 'No visits recorded yet.' : unknown ? `${number.format(unknown)} visits have no location available and are included in the total.` : 'Select a marker to see the location and visit count.';
-      const list = document.getElementById('visitor-locations'); list.replaceChildren();
-      for (const item of locations.slice(0, 8)) {
-        const li = document.createElement('li');
-        const name = document.createElement('span'); name.textContent = placeName(item);
-        const count = document.createElement('span'); count.textContent = number.format(item.visits);
-        li.append(name, count); list.append(li);
-      }
-      document.getElementById('visitor-list-caption').textContent = locations.length ? 'Most visited locations' : 'No mapped locations yet.';
-      drawLocations();
+      status.textContent = 'Aggregate visit count · Location tracking is disabled.';
     } catch (_) { status.textContent = 'Visitor statistics are temporarily unavailable. Please try again later.'; shortcut.textContent = 'View map'; }
   }
   function loadMap() {
     if (mapPromise) return mapPromise;
     mapPromise = new Promise((resolve, reject) => {
-      if (window.T?.Map) { resolve(); return; }
+      if (window.L?.map) { resolve(); return; }
       const script = document.createElement('script');
-      script.src = `https://api.tianditu.gov.cn/api?v=4.0&tk=${encodeURIComponent(config.mapKey)}`;
+      script.src = 'assets/vendor/leaflet/leaflet.js';
       script.referrerPolicy = 'origin'; script.async = true;
       const timeout = setTimeout(() => reject(new Error('Map timeout')), 18000);
-      script.onload = () => { clearTimeout(timeout); window.T?.Map ? resolve() : reject(new Error('Map not available')); };
+      script.onload = () => { clearTimeout(timeout); window.L?.map ? resolve() : reject(new Error('Map not available')); };
       script.onerror = () => { clearTimeout(timeout); reject(new Error('Map unavailable')); };
       document.head.append(script);
     }).then(() => {
       document.getElementById('visitor-map').replaceChildren();
       const tileUrl = layer => `https://t0.tianditu.gov.cn/${layer}_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=${layer}&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=${encodeURIComponent(config.mapKey)}`;
-      const base = new T.TileLayer(tileUrl('vec'), { minZoom:1, maxZoom:8 });
-      const labels = new T.TileLayer(tileUrl('cva'), { minZoom:1, maxZoom:8 });
-      map = new T.Map('visitor-map', { layers:[base, labels], minZoom:1, maxZoom:8 });
-      map.centerAndZoom(new T.LngLat(105,25),1);
-      map.disableScrollWheelZoom(); map.addControl(new T.Control.Zoom());
-      mapStatus.textContent = 'TianDiTu · Drag to explore; use + / − to zoom.';
-      drawLocations();
+      const width = document.getElementById('visitor-map').clientWidth;
+      const map = L.map('visitor-map', { minZoom:0, maxZoom:8, zoomSnap:0, scrollWheelZoom:false, attributionControl:true }).setView([15,150], Math.max(0,Math.log2(width / 256)));
+      const base = L.tileLayer(tileUrl('vec'), { minZoom:0, maxZoom:8, attribution:'&copy; <a href="https://www.tianditu.gov.cn/">天地图</a> · GS(2026)4921号 · 甲测资字11110974' }).addTo(map);
+      L.tileLayer(tileUrl('eva'), { minZoom:0, maxZoom:8 }).addTo(map);
+      mapStatus.textContent = 'Loading TianDiTu basemap…';
+      base.on('tileload', () => { mapStatus.textContent = 'TianDiTu · Drag to explore; use + / − to zoom.'; });
+      base.on('tileerror', () => { mapStatus.textContent = 'The basemap is temporarily unavailable; the visit counter remains available.'; });
+      if ('ResizeObserver' in window) new ResizeObserver(() => map.invalidateSize({pan:false})).observe(document.getElementById('visitor-map'));
     }).catch(() => {
-      mapStatus.textContent = 'The map could not be loaded. Available visitor locations are listed below.';
+      mapStatus.textContent = 'The map could not be loaded. The visit counter remains available.';
       document.getElementById('visitor-map').classList.add('map-unavailable');
     });
     return mapPromise;

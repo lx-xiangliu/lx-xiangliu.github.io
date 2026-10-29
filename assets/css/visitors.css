@@ -23,3 +23,6 @@ body.theme-luka .visitor-map a { color: #31516d; }
 .visitor-privacy p { margin: 10px 0 0; }
 @media (max-width: 640px) { .visitor-map { height: 300px; } .map-unavailable { height: 150px; } .visitor-shortcut { margin-top: 20px; } }
 @media print { #visitors, .visitor-shortcut { display: none; } }
+
+.visitor-map .leaflet-popup-content, body.theme-luka .visitor-map .leaflet-popup-content strong { color: #26323b; }
+.visitor-map .leaflet-control-attribution { font-size: 9px; }

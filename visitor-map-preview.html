@@ -22,10 +22,11 @@
   </script>
   <link rel="stylesheet" href="assets/css/theme-luka.css">
   <link rel="stylesheet" href="assets/css/personal.css?v=20261023-3">
-  <link rel="stylesheet" href="assets/css/visitors.css?v=20261029-1">
+  <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+  <link rel="stylesheet" href="assets/css/visitors.css?v=20261029-3">
   <script src="assets/js/homepage.js" defer></script>
   <script src="assets/js/visitor-config.js?v=20261029-1" defer></script>
-  <script src="assets/js/visitors.js?v=20261029-1" defer></script>
+  <script src="assets/js/visitors.js?v=20261029-3" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -182,15 +183,13 @@
         </article>
       </section>
       <section class="section" id="visitors" aria-labelledby="visitors-title">
-        <h2 class="section-title" id="visitors-title">Visitors around the World</h2>
-        <p class="visitor-intro">Thank you for stopping by. Explore the approximate locations of visits to this homepage.</p>
-        <dl class="visitor-totals"><div><dt>Visits</dt><dd id="visitor-total">—</dd></div><div><dt>Mapped locations</dt><dd id="visitor-location-total">—</dd></div></dl>
+        <h2 class="section-title" id="visitors-title">Visitors &amp; World Map</h2>
+        <p class="visitor-intro">Thank you for stopping by. This counter records visits; location tracking is disabled.</p>
+        <dl class="visitor-totals"><div><dt>Visits</dt><dd id="visitor-total">—</dd></div></dl>
         <div id="visitor-map" class="visitor-map" role="region" aria-label="World visitor map using TianDiTu"><p>Loading world map…</p></div>
         <p class="visitor-map-status" id="visitor-map-status">World basemap provided by TianDiTu (天地图).</p>
         <p class="visitor-status" id="visitor-status" role="status">Loading visitor statistics…</p>
-        <h3 class="visitor-list-caption" id="visitor-list-caption">Visitor locations</h3>
-        <ol class="visitor-locations" id="visitor-locations" aria-label="Visitor locations and visit counts"></ol>
-        <details class="visitor-privacy"><summary>About these statistics</summary><p>Locations are estimated from network information, rounded to 0.1 degree, and may reflect a VPN or proxy. The application stores aggregate city counts, not raw IP addresses or GPS locations. A visit is counted at most once per browser tab every 30 minutes; this is not a count of unique people. Do Not Track and Global Privacy Control are respected. Counting starts when this feature goes live; earlier visits cannot be recovered.</p></details>
+        <details class="visitor-privacy"><summary>About these statistics</summary><p>Only an aggregate visit count is collected. Location tracking and IP lookup are disabled. The application does not read or store visitor IP addresses, cities, or GPS locations. A visit is counted at most once per browser tab every 30 minutes; this is not a count of unique people. Do Not Track and Global Privacy Control are respected. Counting starts when this feature goes live; earlier visits cannot be recovered.</p></details>
         <noscript><p>JavaScript is required to load the visitor map and statistics.</p></noscript>
       </section>
     </main>
