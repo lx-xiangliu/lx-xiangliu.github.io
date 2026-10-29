@@ -23,10 +23,10 @@
   <link rel="stylesheet" href="assets/css/theme-luka.css">
   <link rel="stylesheet" href="assets/css/personal.css?v=20261023-3">
   <link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
-  <link rel="stylesheet" href="assets/css/visitors.css?v=20261029-4">
+  <link rel="stylesheet" href="assets/css/visitors.css?v=20261029-5">
   <script src="assets/js/homepage.js" defer></script>
   <script src="assets/js/visitor-config.js?v=20261029-1" defer></script>
-  <script src="assets/js/visitors.js?v=20261029-4" defer></script>
+  <script src="assets/js/visitors.js?v=20261029-5" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -184,12 +184,17 @@
       </section>
       <section class="section" id="visitors" aria-labelledby="visitors-title">
         <h2 class="section-title" id="visitors-title">Visitors &amp; World Map</h2>
-        <p class="visitor-intro">Thank you for stopping by. This counter records visits; location tracking is disabled.</p>
+        <p class="visitor-intro">Thank you for stopping by. Explore approximate visitor cities around the world.</p>
         <dl class="visitor-totals"><div><dt>Visits</dt><dd id="visitor-total">—</dd></div></dl>
         <div id="visitor-map" class="visitor-map" role="region" aria-label="World map with English country labels on a TianDiTu basemap"><p>Loading world map…</p></div>
         <p class="visitor-map-status" id="visitor-map-status">World basemap provided by TianDiTu (天地图).</p>
         <p class="visitor-status" id="visitor-status" role="status">Loading visitor statistics…</p>
-        <details class="visitor-privacy"><summary>About these statistics</summary><p>Only an aggregate visit count is collected. Location tracking and IP lookup are disabled. The application does not read or store visitor IP addresses, cities, or GPS locations. A visit is counted at most once per browser tab every 30 minutes; this is not a count of unique people. Do Not Track and Global Privacy Control are respected. Counting starts when this feature goes live; earlier visits cannot be recovered.</p></details>
+        <div id="visitor-city-summary" hidden>
+          <h3 class="visitor-list-caption">Top visitor cities</h3>
+          <ul class="visitor-locations" id="visitor-locations" aria-label="Visits by approximate city"></ul>
+          <p id="visitor-location-empty" class="visitor-status">City markers will appear as new visits arrive. Earlier visits have no location data.</p>
+        </div>
+        <details class="visitor-privacy"><summary>About these statistics</summary><p>Your network IP is used for an approximate city lookup through IPWhois (ipwho.is), which receives the IP. This application only stores and publicly displays city totals and coarse map points; it does not store or publish raw IP addresses or collect GPS locations. Hosting providers may process standard connection logs. A visit is counted at most once per browser tab every 30 minutes; this is not a count of unique people. Do Not Track and Global Privacy Control are respected. VPNs and mobile networks may show a different city. Earlier count-only visits have no location data and cannot be mapped.</p></details>
         <noscript><p>JavaScript is required to load the visitor map and statistics.</p></noscript>
       </section>
     </main>

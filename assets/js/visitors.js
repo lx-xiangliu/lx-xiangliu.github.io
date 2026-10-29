@@ -7,7 +7,28 @@
   const mapStatus = document.getElementById('visitor-map-status');
   const shortcut = document.getElementById('visitor-shortcut-count');
   const number = new Intl.NumberFormat('en');
-  let mapPromise;
+  let mapPromise, visitorMap, visitorMarkers;
+  let locations = [];
+  const regions = new Intl.DisplayNames(['en'], {type:'region'});
+  function locationName(place) {
+    let country = place.country;
+    try { country = regions.of(place.country); } catch (_) {}
+    return [place.city, country].filter(Boolean).join(', ');
+  }
+  function drawVisitorMarkers() {
+    if (!visitorMap) return;
+    visitorMarkers.clearLayers();
+    const center = visitorMap.getCenter().lng;
+    for (const place of locations) {
+      const longitude = place.longitude + 360 * Math.round((center - place.longitude) / 360);
+      const popup = document.createElement('div');
+      const title = document.createElement('strong');
+      title.textContent = locationName(place);
+      popup.append(title, document.createElement('br'), `${number.format(place.visits)} visits · Approximate city location`);
+      L.circleMarker([place.latitude,longitude], {radius:Math.min(15,5+Math.log2(1+place.visits)*2),color:'#8b4d2c',weight:1.5,fillColor:'#c47e51',fillOpacity:0.65})
+        .bindPopup(popup).addTo(visitorMarkers);
+    }
+  }
   // Local English names over the unchanged TianDiTu basemap. No visitor data.
   // The provider's legacy English annotation endpoint currently returns no tiles.
   const places = [
@@ -92,7 +113,27 @@
       if (!Number.isFinite(Number(data.visits))) throw new Error('Invalid response');
       document.getElementById('visitor-total').textContent = number.format(data.visits);
       shortcut.textContent = `${number.format(data.visits)} visits`;
-      status.textContent = 'Aggregate visit count · Location tracking is disabled.';
+      locations = Array.isArray(data.locations) ? data.locations.filter(p =>
+        typeof p.city === 'string' && /^[A-Z]{2}$/.test(p.country) &&
+        Number.isFinite(p.latitude) && Math.abs(p.latitude)<=90 &&
+        Number.isFinite(p.longitude) && Math.abs(p.longitude)<=180 && p.visits>0) : [];
+      status.textContent = data.geolocation
+        ? `${number.format(data.locatedVisits || 0)} visits mapped to approximate cities · ${number.format(data.unlocatedVisits || 0)} without a known location.`
+        : 'Aggregate visit count · Location tracking is disabled.';
+      const citySummary = document.getElementById('visitor-city-summary');
+      if (citySummary) {
+        citySummary.hidden = !data.geolocation;
+        const list = document.getElementById('visitor-locations');
+        list.replaceChildren();
+        for (const place of locations.slice(0,8)) {
+          const row = document.createElement('li');
+          const name = document.createElement('span'); name.textContent = locationName(place);
+          const count = document.createElement('span'); count.textContent = number.format(place.visits);
+          row.append(name,count); list.append(row);
+        }
+        document.getElementById('visitor-location-empty').hidden = locations.length>0;
+      }
+      drawVisitorMarkers();
     } catch (_) { status.textContent = 'Visitor statistics are temporarily unavailable. Please try again later.'; shortcut.textContent = 'View map'; }
   }
   function loadMap() {
@@ -111,8 +152,12 @@
       const tileUrl = layer => `https://t0.tianditu.gov.cn/${layer}_w/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=${layer}&STYLE=default&TILEMATRIXSET=w&FORMAT=tiles&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&tk=${encodeURIComponent(config.mapKey)}`;
       const width = document.getElementById('visitor-map').clientWidth;
       const map = L.map('visitor-map', { minZoom:0, maxZoom:8, zoomSnap:0, scrollWheelZoom:false, attributionControl:true }).setView([15,150], Math.max(0,Math.log2(width / 256)));
+      visitorMap = map;
+      visitorMarkers = L.layerGroup().addTo(map);
+      map.on('moveend', drawVisitorMarkers);
       const base = L.tileLayer(tileUrl('vec'), { minZoom:0, minNativeZoom:1, maxZoom:8, attribution:'&copy; <a href="https://www.tianditu.gov.cn/">TianDiTu 天地图</a> · GS(2026)4921号 · 甲测资字11110974' }).addTo(map);
       addEnglishLabels(map);
+      drawVisitorMarkers();
       mapStatus.textContent = 'Loading TianDiTu basemap…';
       base.on('tileload', () => { mapStatus.textContent = 'TianDiTu basemap · English country labels · Drag to explore; use + / − to zoom.'; });
       base.on('tileerror', () => { mapStatus.textContent = 'The basemap is temporarily unavailable; the visit counter remains available.'; });
