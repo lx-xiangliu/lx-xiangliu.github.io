@@ -49,6 +49,8 @@ body.theme-luka .publications ol.bibliography li { padding: 3px 0 3px 18px; }
 body.theme-luka .pub-content .title { margin: 0 0 9px; font-size: 16px; font-weight: 650; line-height: 1.6; }
 body.theme-luka .pub-content .author { margin: 0 0 6px; font-size: 14px; }
 body.theme-luka .pub-content .periodical { margin: 0; color: var(--luka-secondary); font-size: 14px; }
+body.theme-luka .pub-content .title a { color: inherit; }
+.publication-links { display: flex; gap: 16px; margin: 10px 0 0; font-size: 13px; }
 body.theme-luka .institution-logo { display: block; width: 64px; height: 64px; flex-shrink: 0; object-fit: contain; background: #fff; padding: 5px; border-radius: 8px; }
 body.theme-luka .exp-title { font-size: 16px; margin: 0 0 3px; line-height: 1.6; font-weight: 650; }
 body.theme-luka .exp-detail { font-size: 14px; line-height: 1.75; }

@@ -6,7 +6,7 @@ Personal academic website of Xiang Liu (刘祥), an undergraduate researcher at 
 
 ## Update the site
 
-- `index.html`: biography, news, publications, research, education, and experience.
+- `index.html`: biography, news, publications, preprints, research, education, and experience.
 - `assets/css/personal.css`: custom layout and styles layered over the original theme.
 - `assets/css/theme-luka.css`: original Luka theme.
 - `assets/js/homepage.js`: accessible theme toggle with persistent preference.
